@@ -27,7 +27,7 @@ echo "starting nginx"
 nginx
 
 echo "starting pyxform"
-waitress-serve --port=80 --call main:app &
+waitress-serve --port=8080 --call main:app &
 
 echo "starting server"
 mkdir -p /var/log/odk

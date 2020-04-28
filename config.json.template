@@ -15,7 +15,7 @@
       "transportOpts": {
         "host": "${EMAIL__TRANSPORT_OPTS__HOST}",
         "port": ${EMAIL__TRANSPORT_OPTS__PORT},
-        "secure": true,
+        "secure": ${EMAIL__TRANSPORT_OPTS__PORT},
         "auth": {
           "user": "${EMAIL__TRANSPORT_OPTS__AUTH__USER}",
           "pass": "${EMAIL__TRANSPORT_OPTS__AUTH__PASS}"
@@ -23,8 +23,8 @@
       }
     },
     "xlsform": {
-      "host": "${XLSFORM__HOST}",
-      "port": ${XLSFORM__PORT}
+      "host": "localhost",
+      "port": 8080
     },
     "env": {
       "domain": "https://${DOMAIN}"
