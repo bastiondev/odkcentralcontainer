@@ -1,0 +1,6 @@
+[submodule "central"]
+	path = central
+	url = https://github.com/getodk/central
+[submodule "pyxform-http"]
+	path = pyxform-http
+	url = https://github.com/yanokwa/pyxform-http

@@ -1,0 +1,34 @@
+{
+  "default": {
+    "server": {
+      "port": 8383
+    },
+    "database": {
+      "host": "${DATABASE__HOST}",
+      "user": "${DATABASE__USER}",
+      "password": "${DATABASE__PASSWORD}",
+      "database": "${DATABASE__DATABASE}"
+    },
+    "email": {
+      "serviceAccount": "${EMAIL__SERVICE_ACCOUNT}",
+      "transport": "${EMAIL__TRANSPORT}",
+      "transportOpts": {
+        "host": "${EMAIL__TRANSPORT_OPTS__HOST}",
+        "port": ${EMAIL__TRANSPORT_OPTS__PORT},
+        "secure": true,
+        "auth": {
+          "user": "${EMAIL__TRANSPORT_OPTS__AUTH__USER}",
+          "pass": "${EMAIL__TRANSPORT_OPTS__AUTH__PASS}"
+        }
+      }
+    },
+    "xlsform": {
+      "host": "${XLSFORM__HOST}",
+      "port": ${XLSFORM__PORT}
+    },
+    "env": {
+      "domain": "https://${DOMAIN}"
+    },
+    "external": {}
+  }
+}
