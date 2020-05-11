@@ -90,7 +90,7 @@ $ heroku container:login
 $ git clone https://bastiondev/odkcentralcontainer.git
 ```
 
-3. Create the application on Heroku.  The application will be available at https://<appname>.herokuapp.com once deployed.
+3. Create the application on Heroku.  The application will be available at https://&lt;appname&gt;.herokuapp.com once deployed.
 
 ```sh
 $ heroku create <appname>
@@ -119,7 +119,7 @@ $ heroku addons:create heroku-postgresql:hobby-dev
 $ heroku config:set DOMAIN=... EMAIL__SERVICE_ACCOUNT=...
 ```
 
-7. Run the application:
+7. Run the application.  It will be default deploy on the free tier of dynos, which will idle out after inactivity.  For persistent application availability upgrade to a paid tier.
 
 ```sh
 $ heroku container:release web
