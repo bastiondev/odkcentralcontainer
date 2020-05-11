@@ -28,10 +28,11 @@ All variables are required, string values can be left empty.
 
 ### Optional variables
 
-| Variable                            | Description                                     |
-| ----------------------------------- | ----------------------------------------------- |
-| `DEFAULT_ADMIN_EMAIL`               | Email address of bootstrapped admin             |
-| `DEFAULT_ADMIN_PASSWORD`            | Password of bootstrapped admin                  |
+| Variable                            | Description                                             |
+| ----------------------------------- | ------------------------------------------------------- |
+| `DATABASE_URL`                      | To be used instead of the DATABASE__* set (for Heroku)  |
+| `DEFAULT_ADMIN_EMAIL`               | Email address of bootstrapped admin                     |
+| `DEFAULT_ADMIN_PASSWORD`            | Password of bootstrapped admin                          |
 
 If you use the `DEFAULT_ADMIN` settings to bootstrap the first admin user, it is recommended to use a temporary password via the ENV and set the real password via the built-in mechanism so the actual password is not saved unencrypted anywhere.  Additionally, the configuration should be removed after the first run.
 
@@ -67,4 +68,59 @@ CONTAINER ID...
 
 $ docker exec -it <container_id_or_name> bash
 
+```
+
+## Heroku deployment
+
+*Experimental: This deployment method is not tested and ODK Central is not designed to run in an environment like this. Experience with Heroku is recommended to run Central on it.*  
+
+This build of ODK Central can be deployed on Heroku via their Docker Container Registry deploy: https://devcenter.heroku.com/articles/container-registry-and-runtime#getting-started.  Follow the instructions on the Heroku documentation, replaceing the `alpinehelloworld.git` with `odkcentralcontainer.git`.  You'll need to set up a Postgres addon for the application and set the environment variables.  
+
+The PostgreSQL addon will set the `DATABASE_URL` environment variable, which will be used instead of the `DATABASE__*` variables.
+
+1. Log into Heroku on the CLI
+
+```sh
+$ heroku container:login
+```
+
+2. Check out the ODK Central Container
+
+```sh
+$ git clone https://bastiondev/odkcentralcontainer.git
+```
+
+3. Create the application on Heroku.  The application will be available at https://<appname>.herokuapp.com once deployed.
+
+```sh
+$ heroku create <appname>
+```
+
+4. Build and push the application to the container registry
+
+```sh
+$ heroku container:push web
+```
+
+5. (Optional) Provision a PostgreSQL add on database for the application.  hobby-dev is the free tier, which is limited to 10,000 rows.  You will probably need a paid tier for a production application:
+
+```sh
+$ heroku addons:create heroku-postgresql:hobby-dev
+```
+
+6. Set the environment variables.  This can be done on https://dashboard.heroku.com or on the command line, see https://devcenter.heroku.com/articles/config-vars#managing-config-vars.  The required variables for Heroku are:
+
+  - `DOMAIN` - Either custom domain or <appname>.herokuapp.com
+  - `EMAIL__*` - Variables must be configured to enable system emails
+  - `DATABASE_URL` - Will be set by the PostgreSQL addon (you don't have to set it if you use the addon)
+  - `DEFAULT_ADMIN_*` - **Optional** - To set the default admin email & password.  Optional, you can `heroku run` to bash into the container to run `odk-cmd`.
+
+```sh
+$ heroku config:set DOMAIN=... EMAIL__SERVICE_ACCOUNT=...
+```
+
+7. Run the application:
+
+```sh
+$ heroku container:release web
 ```
