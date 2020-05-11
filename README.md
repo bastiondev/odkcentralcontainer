@@ -26,6 +26,15 @@ All variables are required, string values can be left empty.
 | `EMAIL__TRANSPORT_OPTS__AUTH__USER` | Email server username                           |
 | `EMAIL__TRANSPORT_OPTS__AUTH__PASS` | Email server password                           |
 
+### Optional variables
+
+| Variable                            | Description                                     |
+| ----------------------------------- | ----------------------------------------------- |
+| `DEFAULT_ADMIN_EMAIL`               | Email address of bootstrapped admin             |
+| `DEFAULT_ADMIN_PASSWORD`            | Password of bootstrapped admin                  |
+
+If you use the `DEFAULT_ADMIN` settings to bootstrap the first admin user, it is recommended to use a temporary password via the ENV and set the real password via the built-in mechanism so the actual password is not saved unencrypted anywhere.  Additionally, the configuration should be removed after the first run.
+
 ## Build and run
 
 Check out the ODK Central (including its submodules) and pyxform-http submodules:
