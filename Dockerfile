@@ -50,5 +50,6 @@ COPY --from=intermediate /tmp/version.txt /usr/share/nginx/html/
 
 
 COPY start-odk.sh /scripts/start-odk.sh
+COPY src/ ./containerext/
 
 CMD ["/scripts/start-odk.sh"]
