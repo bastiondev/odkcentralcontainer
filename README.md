@@ -4,7 +4,7 @@ This repository builds a single Docker image for ODK Central with its configurat
 
 It does not include a Postgres Instance, and assumes an external database will be used to allow ODK Central to operate in a multi-node configuration.
 
-The target environment is Amazon Web Services' [Elastic Container Service](https://aws.amazon.com/ecs/). 
+The target environment is Amazon Web Services' [Elastic Container Service](https://aws.amazon.com/ecs/) and [Heroku](https://www.heroku.com). 
 
 ## Environment variables
 
