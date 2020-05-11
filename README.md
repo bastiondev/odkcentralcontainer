@@ -113,7 +113,7 @@ $ heroku addons:create heroku-postgresql:hobby-dev
   - `DOMAIN` - Either custom domain or <appname>.herokuapp.com
   - `EMAIL__*` - Variables must be configured to enable system emails
   - `DATABASE_URL` - Will be set by the PostgreSQL addon (you don't have to set it if you use the addon)
-  - `DEFAULT_ADMIN_*` - **Optional** - To set the default admin email & password.  Optional, you can `heroku run` to bash into the container to run `odk-cmd`.
+  - `DEFAULT_ADMIN_*` - **Optional** - To set the default admin email & password.  Alternatively, you can `heroku run` to bash into a one-off dyno to run `odk-cmd`.
 
 ```sh
 $ heroku config:set DOMAIN=... EMAIL__SERVICE_ACCOUNT=...
