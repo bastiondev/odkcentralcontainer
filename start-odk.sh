@@ -38,4 +38,4 @@ waitress-serve --port=8080 --call main:app &
 
 echo "starting server"
 mkdir -p /var/log/odk
-node node_modules/naught/lib/main.js start --remove-old-ipc true --worker-count $WORKER_COUNT --daemon-mode false --log /var/log/odk/naught.log --stdout /proc/1/fd/1 --stderr /proc/1/fd/2 lib/bin/run-server.js
+node node_modules/naught/lib/main.js start --remove-old-ipc true --worker-count $WORKER_COUNT --daemon-mode false --stdout - --stderr - lib/bin/run-server.js
