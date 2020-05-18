@@ -3,12 +3,7 @@
     "server": {
       "port": 8383
     },
-    "database": {
-      "host": "${DATABASE__HOST}",
-      "user": "${DATABASE__USER}",
-      "password": "${DATABASE__PASSWORD}",
-      "database": "${DATABASE__DATABASE}"
-    },
+    "database": "${DATABASE_URL}",
     "email": {
       "serviceAccount": "${EMAIL__SERVICE_ACCOUNT}",
       "transport": "${EMAIL__TRANSPORT}",
