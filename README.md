@@ -87,7 +87,7 @@ $ heroku container:login
 2. Check out the ODK Central Container
 
 ```sh
-$ git clone https://bastiondev/odkcentralcontainer.git
+$ git clone https://github.com/bastiondev/odkcentralcontainer.git
 ```
 
 3. Create the application on Heroku.  The application will be available at https://&lt;appname&gt;.herokuapp.com once deployed.
