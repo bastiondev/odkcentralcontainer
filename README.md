@@ -124,3 +124,12 @@ $ heroku config:set DOMAIN=... EMAIL__SERVICE_ACCOUNT=...
 ```sh
 $ heroku container:release web
 ```
+
+## PostgreSQL Extensions
+
+If running on a shared database environment, the user for ODK Central should not be a superuser.  As part of setting up the database for Central, be sure to create the required extensions:
+
+```
+create extension if not exists citext;
+create extension if not exists pg_trgm;
+```
