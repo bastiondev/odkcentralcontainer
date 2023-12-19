@@ -16,13 +16,23 @@ then
   else
     echo "using DATABASE_URL"
   fi
-
+  ls /usr/share/odk
   # Write the config.json
   /bin/bash -c "envsubst < /usr/share/odk/config.json.template > $CONFIG_PATH"
 fi
 
 echo "running migrations.."
-node -e 'const { withDatabase, migrate } = require("./lib/model/database"); withDatabase(require("config").get("default.database"))(migrate);'
+node -e 'const { withDatabase, migrate } = require("./lib/model/migrate"); withDatabase(require("config").get("default.database"))(migrate);'
+
+echo "checking migration success.."
+node -e 'const { withDatabase, checkMigrations } = require("./lib/model/migrate"); withDatabase(require("config").get("default.database"))(checkMigrations);'
+
+if [ $? -eq 1 ]; then
+  echo "*** Error starting ODK! ***"
+  echo "After attempting to automatically migrate the database, we have detected unapplied migrations, which suggests a problem with the database migration step. Please look in the console above this message for any errors and post what you find in the forum: https://forum.getodk.org/"
+  exit 1
+fi
+
 
 # If DEFAULT_ADMIN_EMAIL is set, we want to run the bootstrapAdmin script to get the first user set up 
 if [ ! -z "${DEFAULT_ADMIN_EMAIL}" ]
@@ -31,6 +41,11 @@ then
   node -e 'const { bootstrapAdmin } = require("./containerext/bootstrap.js"); bootstrapAdmin(require("config").get("default.database"), process.env.DEFAULT_ADMIN_EMAIL, process.env.DEFAULT_ADMIN_PASSWORD);'
   echo "done bootstrapping admin, remove DEFAULT_ADMIN_EMAIL and DEFAULT_ADMIN_PASSWORD from ENV for security"
 fi
+
+# # Set up enketo secrets
+# echo "generating enketo configuration.."
+# /bin/bash -c "SECRET=$(cat /etc/secrets/enketo-secret) LESS_SECRET=$(cat /etc/secrets/enketo-less-secret) API_KEY=$(cat /etc/secrets/enketo-api-key) envsubst '\$DOMAIN:\$SECRET:\$LESS_SECRET:\$API_KEY:\$SUPPORT_EMAIL' < ${CONFIG_PATH}.template > $CONFIG_PATH"
+
 
 echo "starting cron.."
 cron -f &
@@ -48,8 +63,9 @@ echo "starting nginx"
 nginx
 
 echo "starting pyxform"
-waitress-serve --port=8080 --call main:app &
+gunicorn --bind 0.0.0.0:8080 --workers 5 --timeout 600 --max-requests 1 --max-requests-jitter 3 main:app &
 
-echo "starting server"
-mkdir -p /var/log/odk
-node node_modules/naught/lib/main.js start --remove-old-ipc true --worker-count $WORKER_COUNT --daemon-mode false --stdout - --stderr - lib/bin/run-server.js
+
+echo "starting server."
+pm2-runtime ./pm2.config.js --instances $WORKER_COUNT
+
