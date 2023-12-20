@@ -32,6 +32,14 @@ server {
 
   location / {
     root /usr/share/nginx/html;
+    location /version.txt {
+      include /usr/share/odk/nginx/common-headers.conf;
+      add_header Cache-Control no-cache;
+    }
+    location /index.html {
+      include /usr/share/odk/nginx/common-headers.conf;
+      add_header Cache-Control no-cache;
+    }
   }
 }
 
