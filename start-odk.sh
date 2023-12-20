@@ -5,8 +5,8 @@ echo "writing a new nginx configuration file.."
 ################
 
 echo "generating local service configuration.."
-ENKETO_API_KEY=$(cat /etc/secrets/enketo-api-key) \
-BASE_URL=$( [ "${HTTPS_PORT}" = 443 ] && echo https://"${DOMAIN}" || echo https://"${DOMAIN}":"${HTTPS_PORT}" ) \
+# ENKETO_API_KEY=$(cat /etc/secrets/enketo-api-key) \
+BASE_URL=echo https://"${DOMAIN}" \
 envsubst '$DOMAIN $BASE_URL $SYSADMIN_EMAIL $ENKETO_API_KEY $DB_HOST $DB_USER $DB_PASSWORD $DB_NAME $DB_SSL $EMAIL_FROM $EMAIL_HOST $EMAIL_PORT $EMAIL_SECURE $EMAIL_IGNORE_TLS $EMAIL_USER $EMAIL_PASSWORD $OIDC_ENABLED $OIDC_ISSUER_URL $OIDC_CLIENT_ID $OIDC_CLIENT_SECRET $SENTRY_ORG_SUBDOMAIN $SENTRY_KEY $SENTRY_PROJECT' \
     < /usr/share/odk/config.json.template \
     > /usr/odk/config/local.json
@@ -51,13 +51,21 @@ else
 fi
 echo "using $WORKER_COUNT worker(s) based on available memory ($MEMTOT).."
 
+# start from fresh templates in case ssl type has changed
+echo "writing fresh nginx templates..."
+cp /usr/share/odk/nginx/redirector.conf /etc/nginx/conf.d/redirector.conf
+CNAME=$( [ "$SSL_TYPE" = "customssl" ] && echo "local" || echo "$DOMAIN") \
+envsubst '$SSL_TYPE $CNAME $SENTRY_ORG_SUBDOMAIN $SENTRY_KEY $SENTRY_PROJECT' \
+  < /usr/share/odk/nginx/odk.conf.template \
+  > /etc/nginx/conf.d/odk.conf
 echo "starting nginx"
 nginx
+
 
 echo "starting pyxform"
 gunicorn --bind 0.0.0.0:8080 --workers 5 --timeout 600 --max-requests 1 --max-requests-jitter 3 main:app &
 
 
 echo "starting server."
-pm2-runtime ./pm2.config.js --instances $WORKER_COUNT
+exec npx pm2-runtime ./pm2.config.js
 

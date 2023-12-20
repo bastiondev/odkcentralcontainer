@@ -3,27 +3,51 @@
     "server": {
       "port": 8383
     },
-    "database": "${DATABASE_URL}",
+    "database": {
+      "host": "${DB_HOST}",
+      "user": "${DB_USER}",
+      "password": "${DB_PASSWORD}",
+      "database": "${DB_NAME}",
+      "ssl": ${DB_SSL}
+    },
     "email": {
-      "serviceAccount": "${EMAIL__SERVICE_ACCOUNT}",
-      "transport": "${EMAIL__TRANSPORT}",
+      "serviceAccount": "${EMAIL_FROM}",
+      "transport": "smtp",
       "transportOpts": {
-        "host": "${EMAIL__TRANSPORT_OPTS__HOST}",
-        "port": ${EMAIL__TRANSPORT_OPTS__PORT},
-        "secure": ${EMAIL__TRANSPORT_OPTS__PORT},
+        "host": "${EMAIL_HOST}",
+        "port": ${EMAIL_PORT},
+        "secure": ${EMAIL_SECURE},
+        "ignoreTLS": ${EMAIL_IGNORE_TLS},
         "auth": {
-          "user": "${EMAIL__TRANSPORT_OPTS__AUTH__USER}",
-          "pass": "${EMAIL__TRANSPORT_OPTS__AUTH__PASS}"
+          "user": "${EMAIL_USER}",
+          "pass": "${EMAIL_PASSWORD}"
         }
       }
     },
     "xlsform": {
-      "host": "localhost",
-      "port": 8080
+      "host": "pyxform",
+      "port": 80
+    },
+    "enketo": {
+      "url": "http://enketo:8005/-",
+      "apiKey": "${ENKETO_API_KEY}"
     },
     "env": {
-      "domain": "https://${DOMAIN}"
+      "domain": "${BASE_URL}",
+      "sysadminAccount": "${SYSADMIN_EMAIL}"
     },
-    "external": {}
+    "oidc": {
+      "enabled": ${OIDC_ENABLED},
+      "issuerUrl": "${OIDC_ISSUER_URL}",
+      "clientId": "${OIDC_CLIENT_ID}",
+      "clientSecret": "${OIDC_CLIENT_SECRET}"
+    },
+    "external": {
+      "sentry": {
+        "orgSubdomain": "${SENTRY_ORG_SUBDOMAIN}",
+        "key": "${SENTRY_KEY}",
+        "project": "${SENTRY_PROJECT}"
+      }
+    }
   }
 }
