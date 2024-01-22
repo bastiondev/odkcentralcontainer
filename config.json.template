@@ -1,8 +1,5 @@
 {
   "default": {
-    "server": {
-      "port": 8383
-    },
     "database": {
       "host": "${DB_HOST}",
       "user": "${DB_USER}",
@@ -25,8 +22,8 @@
       }
     },
     "xlsform": {
-      "host": "pyxform",
-      "port": 8080
+      "host": "${XLSXFORM_HOST}",
+      "port": ${XLSXFORM_PORT}
     },
     "enketo": {
       "url": "http://enketo:8005/-",

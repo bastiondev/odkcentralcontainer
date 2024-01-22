@@ -6,8 +6,8 @@ echo "writing a new nginx configuration file.."
 
 echo "generating local service configuration.."
 # ENKETO_API_KEY=$(cat /etc/secrets/enketo-api-key) \
-BASE_URL=echo https://"${DOMAIN}" \
-envsubst '$DOMAIN $BASE_URL $SYSADMIN_EMAIL $ENKETO_API_KEY $DB_HOST $DB_USER $DB_PASSWORD $DB_NAME $DB_SSL $EMAIL_FROM $EMAIL_HOST $EMAIL_PORT $EMAIL_SECURE $EMAIL_IGNORE_TLS $EMAIL_USER $EMAIL_PASSWORD $OIDC_ENABLED $OIDC_ISSUER_URL $OIDC_CLIENT_ID $OIDC_CLIENT_SECRET $SENTRY_ORG_SUBDOMAIN $SENTRY_KEY $SENTRY_PROJECT' \
+BASE_URL=$(echo https://"${DOMAIN}"}) \
+envsubst '$DOMAIN $BASE_URL $SYSADMIN_EMAIL $ENKETO_API_KEY $DB_HOST $DB_USER $DB_PASSWORD $DB_NAME $DB_SSL $EMAIL_FROM $EMAIL_HOST $EMAIL_PORT $EMAIL_SECURE $EMAIL_IGNORE_TLS $EMAIL_USER $EMAIL_PASSWORD $OIDC_ENABLED $OIDC_ISSUER_URL $OIDC_CLIENT_ID $OIDC_CLIENT_SECRET $SENTRY_ORG_SUBDOMAIN $SENTRY_KEY $SENTRY_PROJECT $XLSXFORM_HOST $XLSXFORM_PORT' \
     < /usr/share/odk/config.json.template \
     > /usr/odk/config/local.json
 
@@ -17,6 +17,7 @@ export SENTRY_RELEASE
 SENTRY_TAGS="{ \"version.central\": \"$(cat sentry-versions/central)\", \"version.client\": \"$(cat sentry-versions/client)\" }"
 # shellcheck disable=SC2090
 export SENTRY_TAGS
+
 
 echo "running migrations.."
 node ./lib/bin/run-migrations
@@ -62,8 +63,8 @@ echo "starting nginx"
 nginx
 
 
-echo "starting pyxform"
-gunicorn --bind 0.0.0.0:8080 --workers 5 --timeout 600 --max-requests 1 --max-requests-jitter 3 main:app &
+# echo "starting pyxform"
+# gunicorn --bind 0.0.0.0:8080 --workers 5 --timeout 600 --max-requests 1 --max-requests-jitter 3 main:app &
 
 
 echo "starting server."
