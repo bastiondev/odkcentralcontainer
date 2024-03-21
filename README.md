@@ -70,6 +70,12 @@ $ docker exec -it <container_id_or_name> bash
 
 ```
 
+If you need to do a multi-arch build, you can build and push with:
+
+```sh
+$ docker buildx build --platform linux/amd64,linux/arm64 --push -t odkcentralcontainer:<version> .
+```
+
 ## Heroku deployment
 
 *Experimental: This deployment method is not tested and ODK Central is not designed to run in an environment like this. Experience with Heroku is recommended to run Central on it.*  
