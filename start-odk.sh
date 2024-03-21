@@ -54,7 +54,8 @@ echo "using $WORKER_COUNT worker(s) based on available memory ($MEMTOT).."
 
 # start from fresh templates in case ssl type has changed
 echo "writing fresh nginx templates..."
-cp /usr/share/odk/nginx/redirector.conf /etc/nginx/conf.d/redirector.conf
+# No redirector in load-balanced environment
+rm /etc/nginx/conf.d/redirector.conf
 CNAME=$( [ "$SSL_TYPE" = "customssl" ] && echo "local" || echo "$DOMAIN") \
 envsubst '$SSL_TYPE $CNAME $SENTRY_ORG_SUBDOMAIN $SENTRY_KEY $SENTRY_PROJECT' \
   < /usr/share/odk/nginx/odk.conf.template \

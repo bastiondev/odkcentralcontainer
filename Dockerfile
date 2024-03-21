@@ -51,11 +51,11 @@ COPY --from=intermediate /tmp/sentry-versions/ ./sentry-versions
 # Pyxform
 ################ 
 
-COPY pyxform-http/requirements.txt /tmp/ 
-RUN rm /usr/lib/python3.11/EXTERNALLY-MANAGED && \
-  pip install --requirement /tmp/requirements.txt
+# COPY pyxform-http/requirements.txt /tmp/ 
+# RUN rm /usr/lib/python3.11/EXTERNALLY-MANAGED && \
+#   pip install --requirement /tmp/requirements.txt
 
-COPY pyxform-http/app /usr/odk/
+# COPY pyxform-http/app /usr/odk/
 
 
 ################ 
